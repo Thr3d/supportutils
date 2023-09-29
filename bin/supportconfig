@@ -523,7 +523,9 @@ messages_file() {
 	addHeaderFile $OF2
 	if rpm_verify $OF2 rsyslog; then
 		log_cmd $OF2 "systemctl status rsyslog.service"
-		conf_files $OF2 /etc/rsyslog.conf
+		FILES=""
+		FILES=$(find -L /etc/rsyslog.d/ -type f -name *.conf)
+		conf_files $OF2 /etc/rsyslog.conf $FILES
 		log_cmd $OF2 "rsyslogd -N 1"
 	fi
 	rpm_verify $OF2 systemd
